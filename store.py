@@ -1,1 +1,0 @@
-COMMANDS_STORE = {"commands": []}

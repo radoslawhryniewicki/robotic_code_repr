@@ -1,0 +1,2 @@
+class InsufficientCounterLength(Exception):
+    pass
