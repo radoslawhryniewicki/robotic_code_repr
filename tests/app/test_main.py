@@ -1,7 +1,6 @@
 from fastapi.testclient import TestClient
 import pytest
 from app.main import app
-from app.models import RoboticCode
 from app.store import COMMANDS_STORE
 
 test_client = TestClient(app)
