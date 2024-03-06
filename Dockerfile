@@ -1,5 +1,4 @@
 FROM python:3.11.5-slim-bookworm
-ARG YOUR_ENV
 
 ENV PYTHONFAULTHANDLER=1 \
   PYTHONUNBUFFERED=1 \
@@ -14,8 +13,8 @@ ENV PYTHONFAULTHANDLER=1 \
   POETRY_VERSION=1.8.1
 
 WORKDIR /code
-EXPOSE 80
-COPY poetry.lock pyproject.toml /code/
-RUN pip3 install poetry && poetry install
 COPY . /code
+
+RUN pip3 install poetry && poetry install
+EXPOSE 80
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
