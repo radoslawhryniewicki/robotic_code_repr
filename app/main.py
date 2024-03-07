@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
-from app.enums import CommandEnum
-from app.exceptions import InsufficientCounterLength
+
+from app.exceptions import InsufficientCounterLength, CommandNotExist
 from app.models import RoboticCode, Commands
 from app.robotic_code_repr_service import RoboticCodeReprService
 from app.store import COMMANDS_STORE
@@ -16,12 +16,12 @@ def add_commands(commands: Commands):
 
 
 @app.get("/rcrs/{command}", response_model=RoboticCode, status_code=200)
-def get_code(command: CommandEnum):
+def get_code(command: str):
     try:
         robotic_code_repr_service = RoboticCodeReprService()
         robotic_code_repr_service.create_codes_from_commands()
         return RoboticCode(rcr=robotic_code_repr_service.get_code(command))
-    except KeyError:
+    except CommandNotExist:
         raise HTTPException(status_code=404, detail="No such command in commands")
     except InsufficientCounterLength:
         raise HTTPException(

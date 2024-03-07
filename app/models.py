@@ -1,11 +1,8 @@
 from pydantic import BaseModel
 
 
-from app.enums import CommandEnum
-
-
 class Commands(BaseModel):
-    commands: list[CommandEnum]
+    commands: list[str]
 
     model_config = {
         "json_schema_extra": {

@@ -1,4 +1,4 @@
-from app.exceptions import InsufficientCounterLength
+from app.exceptions import CommandNotExist, InsufficientCounterLength
 from app.store import get_sorted_commands_counter
 
 
@@ -50,4 +50,7 @@ class RoboticCodeReprService:
 
     def get_code(self, command: str) -> str:
         assigned_codes = dict(zip(self.sorted_commands_counter, self.codes))
-        return assigned_codes[command]
+        try:
+            return assigned_codes[command]
+        except KeyError:
+            raise CommandNotExist()
