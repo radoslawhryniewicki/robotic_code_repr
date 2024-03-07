@@ -1,5 +1,5 @@
 import pytest
-from app.exceptions import InsufficientCounterLength
+from app.exceptions import CommandNotExist, InsufficientCounterLength
 from app.robotic_code_repr_service import RoboticCodeReprService
 from app.store import COMMANDS_STORE
 
@@ -63,3 +63,13 @@ class TestRoboticCodeReprService:
         COMMANDS_STORE["commands"] += ["LEFT", "LEFT", "DROP"]
         robotic_code_repr_service.create_codes_from_commands()
         assert robotic_code_repr_service.get_code("RIGHT") == "010"
+
+    
+    def test_get_code_raise_exc_when_command_not_exist_in_store(self, robotic_code_repr_service):
+        COMMANDS_STORE["commands"] = ["UP", "DOWN", "DOWN", "RIGHT"]
+        robotic_code_repr_service.create_codes_from_commands()
+
+        with pytest.raises(CommandNotExist):
+            robotic_code_repr_service.get_code("DROP")
+
+

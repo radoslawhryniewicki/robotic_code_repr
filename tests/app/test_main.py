@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 import pytest
+
 from app.main import app
 from app.store import COMMANDS_STORE
 
@@ -34,22 +35,10 @@ def test_add_multiple_commands_in_session():
 def test_get_code_raise_404_when_proper_command_not_exist_in_store():
     test_client.post("/commands/", json={"commands": ["UP", "RIGHT", "LEFT"]})
 
-    response = test_client.get("/rcrs/DOWN")
+    response = test_client.get("/rcrs/sth")
 
     assert response.status_code == 404
     assert response.json() == {"detail": "No such command in commands"}
-
-
-def test_get_code_raise_422_when_invalid_command():
-    test_client.post("/commands/", json={"commands": ["UP", "RIGHT", "LEFT"]})
-
-    response = test_client.get("/rcrs/STH")
-
-    assert response.status_code == 422
-    assert (
-        response.json()["detail"][0]["msg"]
-        == "Input should be 'UP', 'DOWN', 'RIGHT', 'LEFT', 'DROP' or 'GRAB'"
-    )
 
 
 @pytest.mark.parametrize("commands", [[], ["UP"]])
